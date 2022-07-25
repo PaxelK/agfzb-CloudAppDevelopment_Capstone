@@ -1,11 +1,11 @@
   applications:
-  - name: axel_car_dealership
+  - name: axelcardealership
     routes:
-      - route: axel_car_dealership.eu-gb.cf.appdomain.cloud
+      - route: axelcardealership.eu-gb.mybluemix.net
     memory: 128M
     buildpack: python_buildpack
-  - name: axel_car_dealership-nginx
+  - name: axelcardealership-nginx
     routes:
-      - route: axel_car_dealership.eu-gb.cf.appdomain.cloud/static
+      - route: axelcardealership.eu-gb.mybluemix.net/static
     memory: 128M
     buildpack: staticfile_buildpack
