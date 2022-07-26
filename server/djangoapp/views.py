@@ -58,7 +58,7 @@ def registration_request(request):
     context = {}
     
     context['randomVariable'] = "HelloWorld"
-    return render(request, 'djangoapp/registration_request.html', context)    
+    return render(request, 'djangoapp/registration.html', context)    
 
 # Update the `get_dealerships` view to render the index page with a list of dealerships
 def get_dealerships(request):
