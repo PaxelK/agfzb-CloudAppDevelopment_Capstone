@@ -26,13 +26,13 @@ class CarMake(models.Model):
 # - __str__ method to print a car make object
 class Car(models.Model):
     carMake = models.ForeignKey(CarMake,on_delete=models.CASCADE)
-    name = models.CharField(max_length=30)
     dealer_id = models.IntegerField()
+    name = models.CharField(max_length=30)
     car_type = models.CharField(max_length=30)
     year = models.IntegerField()
 
     def __str__(self):
-        return (self.name + ", " + str(dealer_id))
+        return (self.name + ", " + str(self.dealer_id))
 # <HINT> Create a plain Python class `CarDealer` to hold dealer data
 class CarDealer:
     def __init__(self):

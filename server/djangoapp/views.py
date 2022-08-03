@@ -41,17 +41,17 @@ def login_request(request):
         user = authenticate(username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('onlinecourse:index')
+            return redirect('djangoapp:index')
         else:
             context['message'] = "Invalid username or password."
             return render(request, 'djangoapp/user_login.html', context)
     else:
-        return render(request, 'onlinecourse/user_login.html', context)   
+        return render(request, 'djangoapp/user_login.html', context)   
 
 # Create a `logout_request` view to handle sign out request
 def logout_request(request):
     logout(request)
-    return redirect('onlinecourse:index')   
+    return redirect('djangoapp:index')   
 
 # Create a `registration_request` view to handle sign up request
 def registration_request(request):
@@ -94,10 +94,11 @@ def get_dealerships(request):
 
 
 # Create a `get_dealer_details` view to render the reviews of a dealer
-# def get_dealer_details(request, dealer_id):
-# ...
+def get_dealer_details(request, dealer_id):
+    context = {}
 
 # Create a `add_review` view to submit a review
-# def add_review(request, dealer_id):
-# ...
+def add_review(request, dealer_id):
+    context = {}
+
 
