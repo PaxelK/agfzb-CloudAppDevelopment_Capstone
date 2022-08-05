@@ -15,7 +15,7 @@ from .models import Car, CarMake
 """
 class CarInline(admin.StackedInline):
     model = Car
-    list_display = ['name', 'dealer_id', 'car_type', 'year']
+    list_display = ['name', 'id', 'car_type', 'year']
 
 class CarMakeInline(admin.StackedInline):
     model = CarMake
@@ -23,7 +23,7 @@ class CarMakeInline(admin.StackedInline):
 
 # CarModelAdmin class
 class CarAdmin(admin.ModelAdmin):
-    list_display = ['name', 'dealer_id', 'car_type', 'year']
+    list_display = ['name', 'id', 'car_type', 'year']
 
 # CarMakeAdmin class with CarModelInline
 class CarMakeAdmin(admin.ModelAdmin):
