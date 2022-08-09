@@ -3,16 +3,135 @@
 <head>
     <meta charset="UTF-8">
     <title>Dealership Review</title>
-    {% load static %}
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link href="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.18.2/dist/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
+
 </head>
 
-    <body>
+<body>
+<!-- Navigation bar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="{% url 'djangoapp:index' %}">Dealership Review</a>
+        </div>
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item"> 
+                <a class="nav-link" href="{% url 'djangoapp:about' %}">About</a> 
+            </li>
+            <li class="nav-item"> 
+                <a class="nav-link" href="{% url 'djangoapp:contact' %}">Contact</a> 
+            </li>
+            <li class="nav-item"> 
+                <a class="nav-link" href="registration_request/">Register</a> 
+            </li>
+        </ul>
+        
+        <ul class="navbar-nav navbar-right">
+            {% if user.is_authenticated %}
+            <li>
+                <a class="btn btn-link" href="#">{{ user.first_name }}({{ user.username }})</a>
+                <a class="btn btn-link" href="{% url 'djangoapp:logout' %}">Logout</a>
+            </li>
+            {% else %}
+            <li>
+                <form class="form-inline" action="{% url 'djangoapp:login' %}" method="post">
+                    {% csrf_token %}
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Username" name="username" >
+                        <input type="password" class="form-control" placeholder="Username" name="psw" >
+                        <button class="btn btn-primary" type="submit">Login</button>
+                        <a class="btn btn-link" href="{% url 'djangoapp:registration' %}">Sign Up</a>
+                    </div>
+                </form>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+</nav>
+<!--Add a nav bar here -->
 
-    <!--Add a nav bar here -->
+<!--Add a dealer table here -->
+{% if dealer %}
+<div class="container-fluid">
+    <h1>{{dealer.full_name}}</h1>
+    <table class="table-bordered table-striped">
+        <tbody>
+            <tr>
+                <th scope="row">Full Name: </th>
+                <td>{{dealer.full_name}} </td>
+            </tr>
+            <tr>
+                <th scope="row">Short Name: </th>
+                <td>{{dealer.short_name}} </td>
+            </tr>
+            <tr>
+                <th scope="row">City: </th>
+                <td>{{dealer.city}} </td>
+            </tr>
+            <tr>
+                <th scope="row">State: </th>
+                <td>{{dealer.state}} </td>
+            </tr>
+            <tr>
+                <th scope="row">Address: </th>
+                <td>{{dealer.address}} </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{% else %}
+    <h2>Could not find this dealer :(</h2>
+{% endif %}
 
-    <!-- Add reviews as cards -->
+<br>
+<br>
 
-    </body>
+
+<div class="container-fluid">
+    {% if reviews %}
+    <h1>Reviews</h1>
+    <div class="card-deck">
+        {% for review in reviews %}    
+        <div class="card text-white bg-light mb-3">
+            {% if review.sentiment == "positive" %}
+        <div class="card-body bg-success">
+        {% elif review.sentiment == "negative" %} 
+        <div class="card-body bg-danger">
+        {% else %}    
+        <div class="card-body bg-light">
+        {% endif %}
+            <h4 class="card-title">
+                {{review.name}}
+            </h4>
+            <h5 class="card-text">
+                {{review.review}}
+            </h5>
+            {% if review.purchase %}
+            <h06 class="card-subtitle mb-2 text-muted">
+                Purchased {{review.car_make}} {{review.car_model}}, {{review.purchase_date}}
+            </h6>
+            {% endif %}
+        </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <h2>No reviews have been submitted yet.</h2>
+    {% endif %}
+    {% if user.is_authenticated %}
+        <a class="btn btn-link" href="{% url 'djangoapp:add_review' dealer.id %}">Add Review</a> 
+        
+    {% endif %}
+
+</div>
+
+
+</body>
 
 </html>

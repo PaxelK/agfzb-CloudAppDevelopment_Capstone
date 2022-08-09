@@ -11,6 +11,74 @@
 
 </head>
     <body>
-    <!--Add review form here -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="{% url 'djangoapp:index' %}">Dealership Review</a>
+                </div>
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item"> 
+                        <a class="nav-link" href="{% url 'djangoapp:about' %}">About</a> 
+                    </li>
+                    <li class="nav-item"> 
+                        <a class="nav-link" href="{% url 'djangoapp:contact' %}">Contact</a> 
+                    </li>
+                    <li class="nav-item"> 
+                        <a class="nav-link" href="registration_request/">Register</a> 
+                    </li>
+                </ul>
+                
+                <ul class="navbar-nav navbar-right">
+                    {% if user.is_authenticated %}
+                    <li>
+                        <a class="btn btn-link" href="#">{{ user.first_name }}({{ user.username }})</a>
+                        <a class="btn btn-link" href="{% url 'djangoapp:logout' %}">Logout</a>
+                    </li>
+                    {% else %}
+                    <li>
+                        <form class="form-inline" action="{% url 'djangoapp:login' %}" method="post">
+                            {% csrf_token %}
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Username" name="username" >
+                                <input type="password" class="form-control" placeholder="Username" name="psw" >
+                                <button class="btn btn-primary" type="submit">Login</button>
+                                <a class="btn btn-link" href="{% url 'djangoapp:registration' %}">Sign Up</a>
+                            </div>
+                        </form>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </nav>
+
+        <form action="{% url 'djangoapp:add_review' id %}" method="post">
+            <div class="container"> <!--Style root div with .container class -->
+                {% csrf_token %}
+                <h1>Review Submission</h1>
+                <hr>
+                <div class="form-group"> <!--Style second div with .form-group class -->
+                    <label for="car_make"><b>Car-Make: </b></label>
+                    <input type="text" class="form-control" placeholder=" " name="car_make" required> <!--Style input with .form-control class -->
+                    <label for="car_model"><b>Car Model: </b></label>
+                    <input type="text" class="form-control" placeholder=" " name="car_model" required> <!--Style input with .form-control class -->
+
+                    <label for="purchased"><b>Car Purchased: </b></label>
+                    <input type="checkbox" class="form-control " name="purchased"> <!--Style input with .form-control class -->
+                   
+                    <label for="purchase_date"><b>Purchase Date: </b></label>
+                    <input type="text" class="form-control" placeholder=" " name="purchase_date"> <!--Style input with .form-control class -->
+                    <label for="car_year"><b>Car Year: </b></label>
+                    <input type="text" class="form-control" placeholder=" " name="car_year" required> <!--Style input with .form-control class -->
+                    <label for="review"><b>Review: </b></label>
+                    <input type="text" class="form-control" placeholder="Enter your review here... " name="review" required> <!--Style input with .form-control class -->
+                    {% if message %}
+                    <div class="alert alert-warning"> <!--Style the message paragraph with .alert and .alert-warning class -->
+                        {{ message }}
+                    </div>
+                    {% endif %}
+                    <button class="btn btn-primary" type="submit">Submit Review</button> <!--Style button with .btn and .btn-primary class -->
+                </div>
+            </div>
+        </form>
     </body>
 </html>

@@ -15,12 +15,24 @@
 
 <body>
 <!-- Navigation bar -->
-<nav class="navbar navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
         <div class="navbar-header">
             <a class="navbar-brand" href="{% url 'djangoapp:index' %}">Dealership Review</a>
         </div>
-        <ul class="nav navbar-nav navbar-right">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item"> 
+                <a class="nav-link" href="{% url 'djangoapp:about' %}">About</a> 
+            </li>
+            <li class="nav-item"> 
+                <a class="nav-link" href="{% url 'djangoapp:contact' %}">Contact</a> 
+            </li>
+            <li class="nav-item"> 
+                <a class="nav-link" href="registration_request/">Register</a> 
+            </li>
+        </ul>
+        
+        <ul class="navbar-nav navbar-right">
             {% if user.is_authenticated %}
             <li>
                 <a class="btn btn-link" href="#">{{ user.first_name }}({{ user.username }})</a>
@@ -43,23 +55,26 @@
     </div>
 </nav>
 <!--Add a nav bar here -->
-<div class="topnav">
-    <nav class="container-fluid">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="#">Car Dealership</a>
-        <div class="navbar-header">
-        <ul style="list-style-type:none">
-            <li> <a href="{% url 'djangoapp:about' %}"> About </a> </li>
-            <li> <a href="{% url 'djangoapp:contact' %}"> Contact </a> </li>
-            <li> <a href="{% url 'djangoapp:registration' %}"> Register </a> </li>
-            <li> <a href="{% url 'djangoapp:login' %}"> Login </a> </li>
-            <li> <a href="{% url 'djangoapp:logout' %}"> Logout </a> </li>
-        </ul>
-    </nav>
-</div>
-
 
 <!--Add a dealer table here -->
+{% if dealerships %}
+    <div class="container">
+        <div class="card-deck">
+            {% for dealer in dealerships %}
+                <div class="card-body bg-light" style="width: 36rem;">
+                    <h5 class="card-title">
+                        <a class="card-link" href="{% url 'djangoapp:dealer_details' dealer.id %}"> {{dealer.full_name}} </a>
+                    </h5>
+                    <h6 class="card-subtitle mb-2 text-muted">
+                        {{dealer.city}}, {{dealer.st}}
+                    </h6>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% else %}
+    <h2>Did not find any dealerships</h2>
+{% endif %}
 
 </body>
 
