@@ -15,7 +15,7 @@
 
 <body>
 <!-- Navigation bar -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light bg-info">
     <div class="container-fluid">
         <div class="navbar-header">
             <a class="navbar-brand" href="{% url 'djangoapp:index' %}">Dealership Review</a>
@@ -57,25 +57,34 @@
 <!--Add a nav bar here -->
 
 <!--Add a dealer table here -->
-{% if dealerships %}
-    <div class="container">
-        <div class="card-deck">
-            {% for dealer in dealerships %}
-                <div class="card-body bg-light" style="width: 36rem;">
-                    <h5 class="card-title">
-                        <a class="card-link" href="{% url 'djangoapp:dealer_details' dealer.id %}"> {{dealer.full_name}} </a>
-                    </h5>
-                    <h6 class="card-subtitle mb-2 text-muted">
-                        {{dealer.city}}, {{dealer.st}}
-                    </h6>
-                </div>
-            {% endfor %}
-        </div>
-    </div>
-{% else %}
-    <h2>Did not find any dealerships</h2>
-{% endif %}
-
+<table class="table" id="table" data-filter-control="true">
+    <thead>
+        <tr>
+            <th data-field="id">ID</th>
+            <th data-field="dealer_Name">Dealer Name</th>
+            <th data-field="city">City</th>
+            <th data-field="address">Address</th>
+            <th data-field="zip">Zip</th>
+            <th data-field="state" data-filter-control="select">State</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for dealer in dealerships %}
+            <tr>
+                <td>{{dealer.id}}</td>
+                <td><a href="{% url 'djangoapp:dealer_details' dealer.id %}">{{dealer.full_name}}</a></td>
+                <td>{{dealer.city}}</td>
+                <td>{{dealer.address}}</td>
+                <td>{{dealer.zip}}</td>
+                <td>{{dealer.state}}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
 </body>
-
+<script>
+    $(function() {
+      $('#table').bootstrapTable()
+    })
+  </script>
 </html>

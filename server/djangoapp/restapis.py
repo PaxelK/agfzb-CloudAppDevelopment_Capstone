@@ -38,26 +38,22 @@ def get_request(url, **kwargs):
 # Create a `post_request` to make HTTP POST requests
 # e.g., response = requests.post(url, params=kwargs, json=payload)
 def post_request(url, json_payload, **kwargs):
-    params = {
-    "COUCH_URL": "https://95dec834-490b-4251-984e-9e290dc73246-bluemix.cloudantnosqldb.appdomain.cloud",
-    "IAM_API_KEY": "bhIxaiAaAQxgOMIDgsH1BWxOSn6Lyj78R6UvrmcpnxZ3",
-    "COUCH_USERNAME": "95dec834-490b-4251-984e-9e290dc73246-bluemix"
-    }
-    api_key = "bhIxaiAaAQxgOMIDgsH1BWxOSn6Lyj78R6UvrmcpnxZ3"
-    
-    r = requests.post(url, auth=HTTPBasicAuth('apikey', api_key), data=json_payload)
+    r = requests.post(url, params=kwargs, json=json_payload)
     status_code = r.text
-    
     print("With status {} ".format(status_code))
+
 # Create a get_dealers_from_cf method to get dealers from a cloud function
 # def get_dealers_from_cf(url, **kwargs):
 # - Call get_request() with specified arguments
 # - Parse JSON results into a CarDealer object list
 def get_dealers_from_cf(url, **kwargs):
     results = []
+    json_result = {}
     # Call get_request with a URL parameter
-
-    json_result = get_request(url)
+    if(kwargs.get("st")):
+        json_result = get_request(url, st=kwargs["st"])
+    else:
+        json_result = get_request(url)
     if json_result:
         #print(json_result.keys())
         dealers = json_result["dealerships"]
@@ -72,8 +68,9 @@ def get_dealers_from_cf(url, **kwargs):
 
 # Create a get_dealer_reviews_from_cf method to get reviews by dealer id from a cloud function
 def get_dealer_by_id_from_cf(url, id):
+
     json_result = get_request(url, id=id)
-    if json_result:
+    if json_result["dealerships"][0]:
         dealer = json_result["dealerships"][0]
         return dealer
     return False
@@ -82,10 +79,13 @@ def get_dealer_by_id_from_cf(url, id):
 # - Parse JSON results into a DealerView object list
 def get_dealer_reviews_from_cf(url, **kwargs):
     json_result = get_request(url, id=kwargs.get("id"))
+    #print("EARKAXEEEE: ", json.dumps(json_result["body"]["data"][0]))
     reviews = []
     if json_result:
         for review in json_result["body"]["data"]:
-            review["sentiment"] = analyze_review_sentiments(review["review"])["keywords"][0]["sentiment"]["label"]
+            analyzed_results = analyze_review_sentiments(review["review"])
+            if(analyzed_results["keywords"]):
+                review["sentiment"] = analyzed_results["keywords"][0]["sentiment"]["label"]
             reviews.append(review)
             
     return reviews
