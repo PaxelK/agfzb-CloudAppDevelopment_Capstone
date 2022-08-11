@@ -103,24 +103,25 @@
         <div class="card text-white bg-light mb-3">
             {% if review.sentiment == "positive" %}
             <img class="card-img-left w-25" src="{{MEDIA_URL}}/emoji/positive.png"/>  <!-- set width of image to 25%-->
-            <div class="card-body bg-secondary>
+            <div class="card-body bg-secondary">
             {% elif review.sentiment == "negative" %} 
             <div class="card-body bg-secondary">
             {% else %}    
             <div class="card-body bg-secondary">
-            {% endif %}
-                <h4 class="card-title">
-                    {{review.name}}
-                </h4>
-                <h5 class="card-text">
-                    {{review.review}}
-                </h5>
-                {% if review.purchase %}
-                <h6 class="card-subtitle mb-2 text-muted">
-                    Purchased {{review.car_make}} {{review.car_model}}, {{review.purchase_date}}
-                </h6>
                 {% endif %}
-        </div>
+                    <h4 class="card-title">
+                        {{review.name}}
+                    </h4>
+                    <h5 class="card-text">
+                        {{review.review}}
+                    </h5>
+                    {% if review.purchase %}
+                    <h6 class="card-subtitle mb-2 text-muted">
+                        Purchased {{review.car_make}} {{review.car_model}}, {{review.purchase_date}}
+                    </h6>
+                    {% endif %}
+                </div>
+            </div>
         </div>
         {% endfor %}
     </div>

@@ -135,7 +135,7 @@ def add_review(request, id):
         context["id"]=id
 
         cars = Car.objects.all()
-        context["cars"] = cars
+        #context["cars"] = cars # TRIGGERS "cars" in add_review... 
         #print("EARKAXEEE: ", context["cars"].name) FIX THIS
         return render(request, 'djangoapp/add_review.html', context)
     
