@@ -100,14 +100,14 @@
     <h1>Reviews</h1>
     <div class="card-columns">
         {% for review in reviews %}    
-        <div class="card text-white bg-secondary mb-3">
+        <div class="card text-white bg-light mb-3">
             {% if review.sentiment == "positive" %}
             <img class="card-img-left w-25" src="{{MEDIA_URL}}/emoji/positive.png"/>  <!-- set width of image to 25%-->
-            <div class="card-body bg-success">
+            <div class="card-body bg-secondary>
             {% elif review.sentiment == "negative" %} 
-            <div class="card-body bg-danger">
+            <div class="card-body bg-secondary">
             {% else %}    
-            <div class="card-body bg-secondary mb-3">
+            <div class="card-body bg-secondary">
             {% endif %}
                 <h4 class="card-title">
                     {{review.name}}

@@ -25,14 +25,29 @@ class CarMake(models.Model):
 # - Any other fields you would like to include in car model
 # - __str__ method to print a car make object
 class Car(models.Model):
-    carMake = models.ForeignKey(CarMake,on_delete=models.CASCADE)
+    car_make = models.ForeignKey(CarMake,on_delete=models.CASCADE)
     id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=30)
-    car_type = models.CharField(max_length=30)
+    
+    CAR = 'CA'
+    A6 = 'A6'
+    FIREBIRD = 'FB'
+    MX_5 = 'MX'
+    RACECAR = 'RC'
+
+    CAR_TYPES = [
+        (CAR, 'Car'),
+        (A6, 'A6'),
+        (FIREBIRD, 'Firebird'),
+        (MX_5, 'MX-5'),
+        (RACECAR, 'Race Car'),
+    ]
+
+    car_type = models.CharField(max_length=30, choices=CAR_TYPES, default=CAR)
     year = models.IntegerField()
 
     def __str__(self):
-        return (self.name + ", " + str(self.dealer_id))
+        return (self.name + ", " + str(self.car_make))
 # <HINT> Create a plain Python class `CarDealer` to hold dealer data
 class CarDealer:
     def __init__(self, id, city, state, st, address, zip, lat, long, short_name, full_name):

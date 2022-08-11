@@ -133,6 +133,10 @@ def add_review(request, id):
     context = {}
     if request.method == 'GET':
         context["id"]=id
+
+        cars = Car.objects.all()
+        context["cars"] = cars
+        #print("EARKAXEEE: ", context["cars"].name) FIX THIS
         return render(request, 'djangoapp/add_review.html', context)
     
     elif request.method == 'POST':
