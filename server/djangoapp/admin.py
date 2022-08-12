@@ -23,7 +23,7 @@ class CarMakeInline(admin.StackedInline):
 
 # CarModelAdmin class
 class CarAdmin(admin.ModelAdmin):
-    list_display = ['name', 'id', 'car_type', 'year']
+    list_display = ['name', 'id', 'car_type', 'car_make', 'year']
 
 # CarMakeAdmin class with CarModelInline
 class CarMakeAdmin(admin.ModelAdmin):

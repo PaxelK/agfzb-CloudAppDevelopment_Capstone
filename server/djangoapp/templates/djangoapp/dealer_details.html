@@ -95,20 +95,15 @@
 <br>
 
 
-<div class="container-fluid">
+<div class="container">
     {% if reviews %}
     <h1>Reviews</h1>
     <div class="card-columns">
-        {% for review in reviews %}    
+        {% for review in reviews %}
         <div class="card text-white bg-light mb-3">
-            {% if review.sentiment == "positive" %}
-            <img class="card-img-left w-25" src="{{MEDIA_URL}}/emoji/positive.png"/>  <!-- set width of image to 25%-->
-            <div class="card-body bg-secondary">
-            {% elif review.sentiment == "negative" %} 
-            <div class="card-body bg-secondary">
-            {% else %}    
-            <div class="card-body bg-secondary">
-                {% endif %}
+            {% if review.sentiment == "positive" %}    
+                <img class="card-img-left w-25" src="{{MEDIA_URL}}/emoji/positive.png"/>  <!-- set width of image to 25%-->
+                <div class="card-body bg-secondary">
                     <h4 class="card-title">
                         {{review.name}}
                     </h4>
@@ -121,7 +116,37 @@
                     </h6>
                     {% endif %}
                 </div>
-            </div>
+            {% elif review.sentiment == "negative" %} 
+                <img class="card-img-left w-25" src="{{MEDIA_URL}}/emoji/negative.png"/>
+                <div class="card-body bg-secondary">
+                    <h4 class="card-title">
+                        {{review.name}}
+                    </h4>
+                    <h5 class="card-text">
+                        {{review.review}}
+                    </h5>
+                    {% if review.purchase %}
+                    <h6 class="card-subtitle mb-2 text-muted">
+                        Purchased {{review.car_make}} {{review.car_model}}, {{review.purchase_date}}
+                    </h6>
+                    {% endif %}
+                </div>
+            {% else %}    
+                <img class="card-img-left w-25" src="{{MEDIA_URL}}/emoji/neutral.png"/>
+                <div class="card-body bg-secondary">
+                    <h4 class="card-title">
+                        {{review.name}}
+                    </h4>
+                    <h5 class="card-text">
+                        {{review.review}}
+                    </h5>
+                    {% if review.purchase %}
+                    <h6 class="card-subtitle mb-2 text-muted">
+                        Purchased {{review.car_make}} {{review.car_model}}, {{review.purchase_date}}
+                    </h6>
+                    {% endif %}
+                </div>
+            {% endif %}
         </div>
         {% endfor %}
     </div>

@@ -84,8 +84,11 @@ def get_dealer_reviews_from_cf(url, **kwargs):
     if json_result:
         for review in json_result["body"]["data"]:
             analyzed_results = analyze_review_sentiments(review["review"])
+            print("EARKAXEE: ", analyzed_results)
             if(analyzed_results["keywords"]):
                 review["sentiment"] = analyzed_results["keywords"][0]["sentiment"]["label"]
+            else:
+                review["sentiment"] = "neutral"
             reviews.append(review)
             
     return reviews

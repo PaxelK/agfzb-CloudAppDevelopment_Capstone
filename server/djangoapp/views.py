@@ -131,18 +131,24 @@ def get_dealers_st(request, st):
 # Create a `add_review` view to submit a review
 def add_review(request, id):
     context = {}
+
+    url = "https://d74e98ea.eu-gb.apigw.appdomain.cloud/api/dealership"
+    dealer = get_dealer_by_id_from_cf(url, id)
     if request.method == 'GET':
         context["id"]=id
+        context["dealer"] = dealer
 
         cars = Car.objects.all()
-        context["cars"] = cars # TRIGGERS "cars" in add_review... 
-        print("EARKAXEEE: ", context["cars"])
+        context["cars"] = cars 
+
+        current_date = datetime.utcnow().isoformat()
+        current_year = current_date.split("-")[0]
+        context["current_year"] = current_year
+
+
         return render(request, 'djangoapp/add_review.html', context)
     
-    elif request.method == 'POST':
-        url = "https://d74e98ea.eu-gb.apigw.appdomain.cloud/api/dealership"
-        dealer = get_dealer_by_id_from_cf(url, id)
-        
+    elif request.method == 'POST':  
         url = "https://d74e98ea.eu-gb.apigw.appdomain.cloud/api/review"
         
         review_data = {}
@@ -152,7 +158,8 @@ def add_review(request, id):
         if "purchased" in request.POST:
             if request.POST["purchased"] == 'on':
                 review_data["purchase"] = True
-        review_data["purchase_date"] = request.POST["purchase_date"]
+        if "purchase_date" in request.POST:
+            review_data["purchase_date"] = request.POST["purchase_date"]
         review_data["car_make"] = request.POST["car_make"]
         review_data["car_model"] = request.POST["car_model"]
         review_data["car_year"] = request.POST["car_year"]

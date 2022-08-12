@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils.timezone import now
-
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 # Create your models here.
 
@@ -29,22 +29,25 @@ class Car(models.Model):
     id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=30)
     
-    CAR = 'CA'
-    A6 = 'A6'
-    FIREBIRD = 'FB'
-    MX_5 = 'MX'
-    RACECAR = 'RC'
+    SEDAN = 'Sedan'
+    SUV = 'SUV'
+    ROADSTER = 'Roadster'
+    CABRIOLET = 'Cabriolet'
+    PICKUP = 'Pickup'
 
     CAR_TYPES = [
-        (CAR, 'Car'),
-        (A6, 'A6'),
-        (FIREBIRD, 'Firebird'),
-        (MX_5, 'MX-5'),
-        (RACECAR, 'Race Car'),
+        (SEDAN,'Sedan'),
+        (SUV,'SUV'),
+        (ROADSTER,'Roadster'),
+        (CABRIOLET,'Cabriolet'),
+        (PICKUP,'Pickup'),
     ]
 
-    car_type = models.CharField(max_length=30, choices=CAR_TYPES, default=CAR)
-    year = models.IntegerField()
+    car_type = models.CharField(max_length=30, choices=CAR_TYPES, default=SEDAN)
+
+    current_year = int(now().strftime("%Y"))
+
+    year = models.IntegerField(default=current_year,validators=[MaxValueValidator(current_year), MinValueValidator(current_year-50)])
 
     def __str__(self):
         return (self.name + ", " + str(self.car_make))

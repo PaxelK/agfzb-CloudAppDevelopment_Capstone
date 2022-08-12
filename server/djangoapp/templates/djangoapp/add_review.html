@@ -64,8 +64,8 @@
 
                     <div class="form-group">
                         <label for="car_model"><b>Car Model: </b></label>
-                        <select name="car_model" id="car_model" class="form-select" required></select>
-                        <!--
+                        <!--<select name="car_model" id="car_model" class="form-select" required></select> -->
+                        
                         <select name="car_model" id="car_model" class="form-select" required>
                             {% if cars %}
                                 {% for car in cars %}
@@ -73,17 +73,16 @@
                                 {% endfor %}
                             {% endif %}
                        </select>
-                       -->
                     </div>
 
                     <div class="form-group">
-                        <label class="form-check-label" for="purchased"><b>Car Purchased: </b></label>
-                        <input class="form-check-input" style="margin-left: 10px;" type="checkbox" name="purchased" id="purchased">         
+                        <label class="form-check-label" for="purchased"><b>Has purchased a car from {{dealer.full_name}}: </b></label>
+                        <input class="form-check-input purchasedcheck" style="margin-left: 10px;" type="checkbox" name="purchased" id="purchased">         
                     </div>
 
                     <div class="form-group">
                         <label for="purchase_date"><b>Purchase Date: </b></label>
-                        <input type="text" class="form-control" placeholder=" " name="purchase_date"> <!--Style input with .form-control class -->
+                        <input class="date-own form-control" type="text" name="purchase_date" id="purchase_date" disabled> <!--Style input with .form-control class -->
                     </div>
                     
                     <div class="form-group">
@@ -104,5 +103,27 @@
                 </div>
             </div>
         </form>
+
+        <script type="text/javascript">
+            $('.date-own').datepicker({
+                format: 'mm/dd/yyyy'
+            });
+        </script>
+        <script type="text/javascript">
+            $('.purchasedcheck').change(function() {
+                
+                if (document.getElementById('purchased').checked) 
+                {
+                    alert("Checked")
+                    document.getElementById("purchase_date").disabled = false
+                } else 
+                {
+                    alert("Not Checked")
+                    document.getElementById("purchase_date").disabled = true
+                }
+            })
+        </script>
+        
     </body>
+    
 </html>
