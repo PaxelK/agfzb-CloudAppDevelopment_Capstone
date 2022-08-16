@@ -83,13 +83,17 @@ def get_dealer_reviews_from_cf(url, **kwargs):
     reviews = []
     if json_result:
         for review in json_result["body"]["data"]:
-            analyzed_results = analyze_review_sentiments(review["review"])
-            print("EARKAXEE: ", analyzed_results)
-            if(analyzed_results["keywords"]):
-                review["sentiment"] = analyzed_results["keywords"][0]["sentiment"]["label"]
-            else:
+            try:
+                analyzed_results = analyze_review_sentiments(review["review"])
+                #print("EARKAXEE: ", analyzed_results)
+                if(analyzed_results["keywords"]):
+                    review["sentiment"] = analyzed_results["keywords"][0]["sentiment"]["label"]
+                else:
+                    review["sentiment"] = "neutral"
+            except:
                 review["sentiment"] = "neutral"
             reviews.append(review)
+                
             
     return reviews
 # Create an `analyze_review_sentiments` method to call Watson NLU and analyze text
@@ -104,6 +108,8 @@ def analyze_review_sentiments(text):
         version='2022-04-07',
         authenticator=authenticator
     )
-    natural_language_understanding.set_service_url(url_NLU)
+    natural_language_understanding.set_service_url(url_NLU) 
+
+    response = {}
     response = natural_language_understanding.analyze(text=text, features=Features(keywords=KeywordsOptions(sentiment=True,emotion=True,limit=2))).get_result()
     return response
